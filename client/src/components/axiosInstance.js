@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: "/", // common base URL
+    baseURL: "https://connectnest-b1py.onrender.com", // common base URL
 });
 
 // Request interceptor: automatically add token
