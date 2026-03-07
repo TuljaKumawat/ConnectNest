@@ -93,7 +93,6 @@ function App() {
           <Route path='/reset-password/:token' element={< ResetPassword />}></Route>
 
           <Route path='/resident-login' element={< ResidentLogin />}></Route>
-          // Example for Resident Dashboard
           <Route
             path="/resident/dashboard"
             element={
