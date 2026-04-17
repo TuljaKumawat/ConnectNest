@@ -275,14 +275,13 @@
 // }
 
 // export default Path;
-
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Path() {
   return (
-    <div className="main-bg d-flex justify-content-center align-items-center">
-      {/* BACKGROUND CIRCLES */}
+    <div className="main-bg d-flex justify-content-center align-items-center flex-column">
+      {/* BACKGROUND CIRCLES (UNCHANGED) */}
       <div className="circle c1"></div>
       <div className="circle c2"></div>
       <div className="circle c3"></div>
@@ -294,94 +293,116 @@ function Path() {
       <div className="circle c9"></div>
       <div className="circle c10"></div>
 
-      {/* CENTER CARD */}
-      <div className="mobile-card shadow-lg">
-        <h3 className="fw-bold text-center mb-4 heading-text">
-          Choose Your Role?
-        </h3>
+      {/* MAIN CONTENT */}
+      <div
+        className="container text-center position-relative"
+        style={{ zIndex: 2 }}
+      >
+        {/* TOP HEADING */}
+        <h1 className="fw-bold mb-2 title-main">ConnectNest</h1>
+        <p className="mb-4 description">
+          A smart community management platform for admins and residents to
+          manage, track and resolve issues efficiently.
+        </p>
 
-        <Link to="/verify-email" className="text-decoration-none">
-          <div className="option-card blue mb-4">
-            <div className="row align-items-center">
-              <div className="col-5 text-center">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                  alt="admin"
-                  className="img-fluid option-img"
-                />
-              </div>
-              <div className="col-7">
-                <h6 className="fw-bold mb-1 text-primary">Admin</h6>
-                <small>Manage system & users</small>
-              </div>
+        {/* ROLE TITLE */}
+        <h2 className="fw-bold mb-2">Select Your Role</h2>
+        <p className="text-bold mb-5">
+          Choose your role to continue based on your access level
+        </p>
+
+        {/* CARDS */}
+        <div className="row justify-content-center g-4">
+          {/* ADMIN CARD */}
+          <div className="col-md-5">
+            <div className="role-card">
+              <div className="icon">👨‍💼</div>
+              <h4 className="fw-bold mt-2">Admin Login</h4>
+              <p>
+                For <b>society managers, admins</b> and authorized personnel.
+                Manage users, approvals and system operations.
+              </p>
+
+              <Link to="/verify-email">
+                <button className="btn role-btn mt-3">Go to Admin</button>
+              </Link>
             </div>
           </div>
-        </Link>
 
-        <Link to="/resident-login" className="text-decoration-none">
-          <div className="option-card yellow">
-            <div className="row align-items-center">
-              <div className="col-5 text-center">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/747/747376.png"
-                  alt="user"
-                  className="img-fluid option-img"
-                />
-              </div>
-              <div className="col-7">
-                <h6 className="fw-bold mb-1 text-warning">User</h6>
-                <small>Raise & track complaints</small>
-              </div>
+          {/* USER CARD */}
+          <div className="col-md-5">
+            <div className="role-card">
+              <div className="icon">👤</div>
+              <h4 className="fw-bold mt-2">Resident / User Login</h4>
+              <p>
+                For <b>residents and users</b>. Raise complaints, access
+                services and track requests.
+              </p>
+
+              <Link to="/resident-login">
+                <button className="btn role-btn mt-3">Go to User</button>
+              </Link>
             </div>
           </div>
-        </Link>
+        </div>
       </div>
 
-      {/* COMPONENT SPECIFIC CSS */}
+      {/* CSS */}
       <style>{`
 
-        .mobile-card {
-          width: 380px;
+        .title-main {
+  font-size: 60px;
+  font-weight: 800;
+  background: linear-gradient(45deg, #345bcf, #1cc88a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+        .description {
+  max-width: 700px;
+  margin: auto;
+  font-size: 18px;   /* 👈 paragraph bhi bada */
+  color: black;
+  line-height: 1.6;
+}
+
+        .role-card {
           background: white;
-          border-radius: 30px;
-          padding: 40px 25px;
-          position: relative;
-          z-index: 2;
-        }
-
-        .heading-text {
-          font-size: 28px;
-          color: #444;
-        }
-
-        .option-card {
-          padding: 20px;
-          border-radius: 22px;
-          border: 3px solid;
+          border-radius: 20px;
+          padding: 30px 25px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.15);
           transition: 0.3s ease;
-          cursor: pointer;
+          height: 100%;
         }
 
-        .option-card:hover {
-          transform: scale(0.96);
+        .role-card:hover {
+          transform: translateY(-5px);
         }
 
-        .option-img {
-          max-height: 85px;
+        .icon {
+          font-size: 40px;
         }
 
-        .blue {
-          background: #e7efff;
-          border-color: #4e73df;
+        .role-btn {
+          background: #2c3e50;
+          color: white;
+          border-radius: 30px;
+          padding: 10px 25px;
+          border: none;
+          width: 100%;
         }
 
-        .yellow {
-          background: #fff4d6;
-          border-color: #fbb034;
+        .role-btn:hover {
+          background: #1a252f;
         }
+@media (max-width: 768px) {
+  .title-main {
+    font-size: 36px;
+  }
 
-        @media (max-width: 768px) {
-          .mobile-card { width: 92%; }
+  .description {
+    font-size: 16px;
+  }
+}
         }
 
       `}</style>
@@ -390,3 +411,4 @@ function Path() {
 }
 
 export default Path;
+
