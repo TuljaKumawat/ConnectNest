@@ -18,6 +18,123 @@ const generateCode = (name) => {
 };
 
 // POST /api/auth/register-community
+// router.post("/verify-email", async (req, res) => {
+//     try {
+//         const { email } = req.body;
+
+//         const alreadyUser = await User.findOne({ email });
+//         if (alreadyUser) {
+//             return res.status(400).json({
+//                 error: "Email is already registered with us.",
+//             });
+//         }
+
+//         const token = crypto.randomBytes(32).toString("hex");
+
+//         await EmailVerification.findOneAndUpdate(
+//             { email },
+//             {
+//                 email,
+//                 token,
+//                 expiresAt: Date.now() + 15 * 60 * 1000,
+//                 verified: false,
+//             },
+//             { upsert: true, new: true }
+//         );
+
+//         const link = `${frontendURL}/verify-email/${token}`;
+
+//         await sendMail(
+//             email,
+//             "Verify your email",
+//             `<a href="${link}">Click here to verify</a>`
+//         );
+
+//         res.json({ message: "Verification email sent" });
+//     } catch (err) {
+//         res.status(500).json({ error: "Failed to send email" });
+//     }
+// });
+
+
+// router.get("/verify-email/:token", async (req, res) => {
+//     try {
+//         const record = await EmailVerification.findOne({
+//             token: req.params.token,
+//             expiresAt: { $gt: Date.now() },
+//         });
+
+//         if (!record) {
+//             return res.status(400).json({
+//                 error: "Verification link expired or invalid",
+//             });
+//         }
+
+//         record.verified = true;
+//        await sendMail(
+//   email,
+//   "Verify Your Email - ConnectNest",
+//   `
+//   <div style="font-family: Arial, sans-serif; background:#f4f6f9; padding:30px;">
+    
+//     <div style="max-width:600px; margin:auto; background:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.1);">
+      
+//       <!-- HEADER -->
+//       <div style="background:#0d6efd; color:#fff; padding:20px; text-align:center;">
+//         <h2 style="margin:0;">ConnectNest</h2>
+//         <p style="margin:5px 0 0; font-size:14px;">
+//           Smart Community Management Platform
+//         </p>
+//       </div>
+
+//       <!-- BODY -->
+//       <div style="padding:30px; text-align:center;">
+//         <h3 style="color:#333;">Verify Your Email</h3>
+        
+//         <p style="color:#555; font-size:15px;">
+//           Thank you for registering with <b>ConnectNest</b> 🎉 <br/>
+//           Please confirm your email address to continue.
+//         </p>
+
+//         <!-- BUTTON -->
+//         <a href="${link}" 
+//            style="
+//              display:inline-block;
+//              margin-top:20px;
+//              padding:12px 25px;
+//              background:#0d6efd;
+//              color:#fff;
+//              text-decoration:none;
+//              border-radius:6px;
+//              font-weight:bold;
+//            ">
+//            Verify Email
+//         </a>
+
+//         <p style="margin-top:25px; font-size:13px; color:#888;">
+//           This link will expire in 15 minutes.
+//         </p>
+//       </div>
+
+//       <!-- FOOTER -->
+//       <div style="background:#f1f1f1; padding:15px; text-align:center; font-size:12px; color:#666;">
+//         If you did not request this, you can safely ignore this email.
+//         <br/>
+//         © ${new Date().getFullYear()} ConnectNest. All rights reserved.
+//       </div>
+
+//     </div>
+//   </div>
+//   `
+// );
+//      res.json({ message: "Verification email sent" });   
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ error: "Something went wrong" });
+//     }
+// });
+
+
 router.post("/verify-email", async (req, res) => {
     try {
         const { email } = req.body;
@@ -44,37 +161,16 @@ router.post("/verify-email", async (req, res) => {
 
         const link = `${frontendURL}/verify-email/${token}`;
 
+        // await sendMail(
+
+        //     email,
+        //     "Verify your email",
+        //     `<a href="${link}">Click here to verify</a>`
+        // );
         await sendMail(
             email,
-            "Verify your email",
-            `<a href="${link}">Click here to verify</a>`
-        );
-
-        res.json({ message: "Verification email sent" });
-    } catch (err) {
-        res.status(500).json({ error: "Failed to send email" });
-    }
-});
-
-
-router.get("/verify-email/:token", async (req, res) => {
-    try {
-        const record = await EmailVerification.findOne({
-            token: req.params.token,
-            expiresAt: { $gt: Date.now() },
-        });
-
-        if (!record) {
-            return res.status(400).json({
-                error: "Verification link expired or invalid",
-            });
-        }
-
-        record.verified = true;
-       await sendMail(
-  email,
-  "Verify Your Email - ConnectNest",
-  `
+            "Verify Your Email - ConnectNest",
+            `
   <div style="font-family: Arial, sans-serif; background:#f4f6f9; padding:30px;">
     
     <div style="max-width:600px; margin:auto; background:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.1);">
@@ -126,14 +222,44 @@ router.get("/verify-email/:token", async (req, res) => {
     </div>
   </div>
   `
-);
-     res.json({ message: "Verification email sent" });   
+        );
+
+
+
+        res.json({ message: "Verification email sent" });
+    } catch (err) {
+        res.status(500).json({ error: "Failed to send email" });
+    }
+});
+
+
+router.get("/verify-email/:token", async (req, res) => {
+    try {
+        const record = await EmailVerification.findOne({
+            token: req.params.token,
+            expiresAt: { $gt: Date.now() },
+        });
+
+        if (!record) {
+            return res.status(400).json({
+                error: "Verification link expired or invalid",
+            });
+        }
+
+        record.verified = true;
+        await record.save();
+
+        // ✅ SEND JSON, NOT REDIRECT
+        return res.status(200).json({
+            message: "Email verified successfully",
+            email: record.email,
+        });
+
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Something went wrong" });
     }
 });
-
 
 
 
