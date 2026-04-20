@@ -17,6 +17,39 @@ router.get('/pending-admins', async (req, res) => {
 
 
 
+// router.put('/approve/:id', async (req, res) => {
+//     try {
+//         const admin = await User.findByIdAndUpdate(
+//             req.params.id,
+//             { status: "approved" },
+//             { new: true }
+//         ).populate('communityId');
+
+//         if (!admin) return res.status(404).json({ error: "Admin not found" });
+
+//         // 👉 Send approval email
+//         await sendMail(
+//             admin.email,
+//             "Your Admin Access is Approved!",
+//             `
+//         <h3>Congratulations!</h3>
+//         <p>Your registration has been approved. Below are your credentials:</p>
+//         <ul>
+//           <li><strong>Login ID:</strong> ${admin.email}</li>
+//           <li><strong>Password:</strong> (Password you set at registration)</li>
+//           <li><strong>Community ID:</strong> ${admin.communityId.communityCode}</li>
+//         </ul>
+//         <p><a href="${frontendURL}/login">Login Here</a></p>
+//       `
+//         );
+
+//         res.json({ message: "Admin approved and email sent." });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ error: "Something went wrong." });
+//     }
+// });
+
 router.put('/approve/:id', async (req, res) => {
     try {
         const admin = await User.findByIdAndUpdate(
@@ -27,19 +60,60 @@ router.put('/approve/:id', async (req, res) => {
 
         if (!admin) return res.status(404).json({ error: "Admin not found" });
 
-        // 👉 Send approval email
+        // 🌟 PREMIUM EMAIL TEMPLATE
         await sendMail(
             admin.email,
-            "Your Admin Access is Approved!",
+            "🎉 Your Admin Access is Approved - ConnectNest",
             `
-        <h3>Congratulations!</h3>
-        <p>Your registration has been approved. Below are your credentials:</p>
-        <ul>
-          <li><strong>Login ID:</strong> ${admin.email}</li>
-          <li><strong>Password:</strong> (Password you set at registration)</li>
-          <li><strong>Community ID:</strong> ${admin.communityId.communityCode}</li>
-        </ul>
-        <p><a href="${frontendURL}/login">Login Here</a></p>
+        <div style="font-family: Arial, sans-serif; background: #f4f6f8; padding: 20px;">
+          
+          <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+
+            <!-- HEADER -->
+            <div style="background: linear-gradient(45deg, #1f2937, #374151); padding: 20px; text-align: center;">
+              <h2 style="color: #ffffff; margin: 0;">ConnectNest</h2>
+              <p style="color: #d1d5db; margin: 5px 0 0;">Smart Community Platform</p>
+            </div>
+
+            <!-- BODY -->
+            <div style="padding: 25px;">
+              <h3 style="color: #111827;">🎉 Congratulations, ${admin.firstName}!</h3>
+
+              <p style="color: #374151; font-size: 15px;">
+                Your admin registration has been <b style="color: green;">successfully approved</b>. 
+                You can now access your dashboard and manage your community.
+              </p>
+
+              <!-- DETAILS BOX -->
+              <div style="background: #f9fafb; padding: 15px; border-radius: 10px; margin: 20px 0;">
+                <p style="margin: 5px 0;"><b>📧 Email:</b> ${admin.email}</p>
+                <p style="margin: 5px 0;"><b>🏢 Community Code:</b> ${admin.communityId.communityCode}</p>
+                <p style="margin: 5px 0;"><b>🔑 Password:</b> (Your registered password)</p>
+              </div>
+
+              <!-- BUTTON -->
+              <div style="text-align: center; margin-top: 25px;">
+                <a href="${frontendURL}/admin-login"
+                  style="background: #2563eb; color: white; padding: 12px 25px; 
+                  text-decoration: none; border-radius: 25px; font-weight: bold; display: inline-block;">
+                  🚀 Login to Dashboard
+                </a>
+              </div>
+
+              <p style="margin-top: 30px; font-size: 14px; color: #6b7280;">
+                If you did not request this, please ignore this email.
+              </p>
+            </div>
+
+            <!-- FOOTER -->
+            <div style="background: #f3f4f6; padding: 15px; text-align: center;">
+              <p style="font-size: 13px; color: #6b7280; margin: 0;">
+                © ${new Date().getFullYear()} ConnectNest. All rights reserved.
+              </p>
+            </div>
+
+          </div>
+        </div>
       `
         );
 
