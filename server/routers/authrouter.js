@@ -127,6 +127,7 @@ router.get("/verify-email/:token", async (req, res) => {
   </div>
   `
 );
+     res.json({ message: "Verification email sent" });   
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Something went wrong" });
