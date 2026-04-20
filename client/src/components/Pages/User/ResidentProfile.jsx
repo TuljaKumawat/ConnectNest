@@ -370,7 +370,7 @@
 // export default ResidentProfile;
 
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../axiosInstance";
 import { Modal, Button } from "react-bootstrap";
 
 function ResidentProfile() {
